@@ -45,8 +45,30 @@ export const extractProductDetails = async (
     return JSON.parse(jsonString) as ProductDetails;
   } catch (error) {
     console.error("Error extracting product details:", error);
+
+    // Provide more specific error messages based on the error type
+    if (error instanceof Error) {
+      // Check for network/fetch errors
+      if (
+        error.message.includes("fetch") ||
+        error.message.includes("network")
+      ) {
+        throw new Error(
+          "Couldn't fetch the listing. Please check your internet connection and try again.",
+        );
+      }
+
+      // Check for JSON parsing errors
+      if (error.message.includes("JSON") || error.message.includes("parse")) {
+        throw new Error(
+          "Couldn't fetch the listing. The page format might have changed. Please try again.",
+        );
+      }
+    }
+
+    // Default error message
     throw new Error(
-      "Failed to analyze the provided URL. The content might be inaccessible.",
+      "Couldn't fetch the listing. Please check the URL and try again.",
     );
   }
 };

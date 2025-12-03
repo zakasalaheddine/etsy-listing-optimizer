@@ -13,6 +13,7 @@ export default function OptimizerTool() {
   const [email, setEmail] = useState<string | null>(null);
   const [url, setUrl] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
+  const [loadingStep, setLoadingStep] = useState<number>(1);
   const [optimizationResult, setOptimizationResult] =
     useState<OptimizationResult | null>(null);
   const [rateLimitInfo, setRateLimitInfo] = useState<{
@@ -59,8 +60,20 @@ export default function OptimizerTool() {
       setPendingUrl("");
 
       // Trigger optimization directly
-      setLoadingMessage("Analyzing listing URL...");
+      setLoadingMessage("Fetching listing details...");
+      setLoadingStep(1);
       setOptimizationResult(null);
+
+      // Simulate progress steps
+      setTimeout(() => {
+        setLoadingMessage("Analyzing product information...");
+        setLoadingStep(2);
+      }, 1000);
+
+      setTimeout(() => {
+        setLoadingMessage("Generating SEO optimizations...");
+        setLoadingStep(3);
+      }, 2500);
 
       optimizeMutation
         .mutateAsync({
@@ -71,7 +84,6 @@ export default function OptimizerTool() {
         .then((result) => {
           if (result) {
             setOptimizationResult(result);
-            setLoadingMessage("Checking listing and generating SEO...");
             if (result.rateLimit) {
               setRateLimitInfo(result.rateLimit);
             }
@@ -90,6 +102,7 @@ export default function OptimizerTool() {
         })
         .finally(() => {
           setLoadingMessage("");
+          setLoadingStep(1);
         });
     }
   }, [name, email, pendingUrl, optimizeMutation]);
@@ -101,8 +114,20 @@ export default function OptimizerTool() {
         return;
       }
 
-      setLoadingMessage("Analyzing listing URL...");
+      setLoadingMessage("Fetching listing details...");
+      setLoadingStep(1);
       setOptimizationResult(null);
+
+      // Simulate progress steps
+      const step2Timer = setTimeout(() => {
+        setLoadingMessage("Analyzing product information...");
+        setLoadingStep(2);
+      }, 1000);
+
+      const step3Timer = setTimeout(() => {
+        setLoadingMessage("Generating SEO optimizations...");
+        setLoadingStep(3);
+      }, 2500);
 
       try {
         const optimizationResult = await optimizeMutation.mutateAsync({
@@ -115,12 +140,14 @@ export default function OptimizerTool() {
           throw new Error("Could not generate optimized listing.");
         }
         setOptimizationResult(optimizationResult);
-        setLoadingMessage("Checking listing and generating SEO...");
         if (optimizationResult.rateLimit) {
           setRateLimitInfo(optimizationResult.rateLimit);
         }
       } catch (err) {
         console.error(err);
+        // Clear timers on error
+        clearTimeout(step2Timer);
+        clearTimeout(step3Timer);
         if ((err as RateLimitError).rateLimitExceeded) {
           const rateLimitErr = err as RateLimitError;
           setRateLimitInfo({
@@ -131,6 +158,7 @@ export default function OptimizerTool() {
         }
       } finally {
         setLoadingMessage("");
+        setLoadingStep(1);
       }
     },
     [url, email, name, optimizeMutation],
@@ -200,7 +228,7 @@ export default function OptimizerTool() {
           )}
 
           {optimizeMutation.isPending && (
-            <LoadingSpinner message={loadingMessage} />
+            <LoadingSpinner message={loadingMessage} step={loadingStep} />
           )}
 
           {optimizeMutation.error &&

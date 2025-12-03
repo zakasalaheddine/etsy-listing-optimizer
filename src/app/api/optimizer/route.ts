@@ -2,6 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import { and, eq, gte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { emails, optimizations } from "@/lib/db/schema";
+import { validateEtsyUrl } from "@/lib/utils";
+import type { OptimizationResult, ProductDetails } from "@/types";
 import { extractProductDetails } from "./extract-service";
 import { generateOptimizedListing } from "./optimize";
 
@@ -32,6 +34,12 @@ export async function POST(request: Request) {
     }
     if (!name) {
       return Response.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    // Validate Etsy URL
+    const urlValidation = validateEtsyUrl(url);
+    if (!urlValidation.isValid) {
+      return Response.json({ error: urlValidation.error }, { status: 400 });
     }
 
     // Check rate limit: count optimizations for this email today
@@ -73,22 +81,45 @@ export async function POST(request: Request) {
       // This is fine - we just want to collect emails, no verification needed
     }
 
-    const details = await extractProductDetails(url, ai);
-    if (!details || !details.description || !details.title) {
-      return Response.json(
-        { error: "Could not extract product details from the URL." },
-        { status: 400 },
-      );
+    let details: ProductDetails;
+    try {
+      details = await extractProductDetails(url, ai);
+      if (!details || !details.description || !details.title) {
+        return Response.json(
+          {
+            error:
+              "Couldn't fetch the listing. Please check the URL and try again.",
+          },
+          { status: 400 },
+        );
+      }
+    } catch (error) {
+      // Extract error message from extraction service
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Couldn't fetch the listing. Please try again.";
+      return Response.json({ error: errorMessage }, { status: 400 });
     }
-    const optimizationResult = await generateOptimizedListing(
-      details.description,
-      ai,
-    );
-    if (!optimizationResult) {
-      return Response.json(
-        { error: "Could not generate optimized listing." },
-        { status: 500 },
+    let optimizationResult: OptimizationResult;
+    try {
+      optimizationResult = await generateOptimizedListing(
+        details.description,
+        ai,
       );
+      if (!optimizationResult) {
+        return Response.json(
+          { error: "Optimization failed. Please retry." },
+          { status: 500 },
+        );
+      }
+    } catch (error) {
+      // Extract error message from optimization service
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Optimization failed. Please retry.";
+      return Response.json({ error: errorMessage }, { status: 500 });
     }
 
     // Record this optimization
@@ -106,10 +137,12 @@ export async function POST(request: Request) {
       { status: 200 },
     );
   } catch (error) {
-    console.error(error);
-    return Response.json(
-      { error: "Error extracting product details" },
-      { status: 500 },
-    );
+    console.error("Unexpected error in optimizer route:", error);
+    // If it's already a structured error with a message, use it
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occurred. Please try again.";
+    return Response.json({ error: errorMessage }, { status: 500 });
   }
 }

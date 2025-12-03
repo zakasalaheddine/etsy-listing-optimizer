@@ -34,9 +34,7 @@ export default function EmailForm({ onEmailSubmitted }: EmailFormProps) {
       const data = await response.json();
       onEmailSubmitted(data.email);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to submit email",
-      );
+      setError(err instanceof Error ? err.message : "Failed to submit email");
     } finally {
       setIsSubmitting(false);
     }
@@ -85,4 +83,3 @@ export default function EmailForm({ onEmailSubmitted }: EmailFormProps) {
     </div>
   );
 }
-

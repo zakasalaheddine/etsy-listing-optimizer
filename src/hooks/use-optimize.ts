@@ -18,24 +18,34 @@ export interface RateLimitError extends Error {
 const optimizeListing = async (
   request: OptimizeRequest,
 ): Promise<OptimizationResult> => {
-  const response = await fetch("/api/optimizer", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      url: request.url,
-      email: request.email,
-      name: request.name,
-    }),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch("/api/optimizer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: request.url,
+        email: request.email,
+        name: request.name,
+      }),
+    });
+  } catch (error) {
+    // Handle network errors (no internet, server unreachable, etc.)
+    console.error("Network error:", error);
+    throw new Error(
+      "Connection failed. Please check your internet connection and try again.",
+    );
+  }
 
   if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({ error: "Unknown error" }));
+    const error = await response.json().catch(() => ({
+      error: "Failed to optimize listing. Please try again.",
+    }));
     const rateLimitError: RateLimitError = new Error(
-      error.error || "Failed to optimize listing",
+      error.error || "Failed to optimize listing. Please try again.",
     );
     if (response.status === 429) {
       rateLimitError.rateLimitExceeded = true;

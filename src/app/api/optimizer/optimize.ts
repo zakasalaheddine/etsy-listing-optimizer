@@ -88,8 +88,38 @@ export const generateOptimizedListing = async (
     return JSON.parse(jsonString) as OptimizationResult;
   } catch (error) {
     console.error("Error generating optimized listing:", error);
-    throw new Error(
-      "Failed to generate the optimized listing. The AI model may have returned an unexpected response.",
-    );
+
+    // Provide more specific error messages based on the error type
+    if (error instanceof Error) {
+      // Check for network/API errors
+      if (
+        error.message.includes("fetch") ||
+        error.message.includes("network")
+      ) {
+        throw new Error(
+          "Optimization failed due to network issues. Please retry.",
+        );
+      }
+
+      // Check for JSON parsing errors
+      if (error.message.includes("JSON") || error.message.includes("parse")) {
+        throw new Error(
+          "Optimization failed. The AI returned an unexpected format. Please retry.",
+        );
+      }
+
+      // Check for rate limit or quota errors
+      if (
+        error.message.includes("quota") ||
+        error.message.includes("rate limit")
+      ) {
+        throw new Error(
+          "Optimization failed due to high demand. Please try again in a few moments.",
+        );
+      }
+    }
+
+    // Default error message
+    throw new Error("Optimization failed. Please retry in a few moments.");
   }
 };
