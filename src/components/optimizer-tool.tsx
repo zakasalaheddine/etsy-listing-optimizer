@@ -1,14 +1,16 @@
 "use client";
 
 import type React from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useOptimize } from "@/hooks/use-optimize";
 import type { OptimizationResult } from "@/types";
 import LoadingSpinner from "./loading-spinner";
+import OptimizerForm from "./optimizer-form";
 import ResultsDisplay from "./results-display";
-import UrlInputForm from "./url-input-form";
 
 export default function OptimizerTool() {
+  const [name, setName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [url, setUrl] = useState<string>("");
   const [loadingMessage, setLoadingMessage] = useState<string>("");
   const [optimizationResult, setOptimizationResult] =
@@ -16,10 +18,70 @@ export default function OptimizerTool() {
 
   const optimizeMutation = useOptimize();
 
+  // Load name and email from localStorage on mount
+  useEffect(() => {
+    const storedName = localStorage.getItem("optimizer_name");
+    const storedEmail = localStorage.getItem("optimizer_email");
+    if (storedName) {
+      setName(storedName);
+    }
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+
+  const [pendingUrl, setPendingUrl] = useState<string>("");
+
+  const handleUserInfoSubmitted = useCallback(
+    (submittedName: string, submittedEmail: string) => {
+      setName(submittedName);
+      setEmail(submittedEmail);
+      localStorage.setItem("optimizer_name", submittedName);
+      localStorage.setItem("optimizer_email", submittedEmail);
+      // If URL was filled when submitting user info, store it for auto-optimization
+      if (url.trim()) {
+        setPendingUrl(url);
+      }
+    },
+    [url],
+  );
+
+  // Auto-trigger optimization when user info becomes available and URL is pending
+  useEffect(() => {
+    if (name && email && pendingUrl && !optimizeMutation.isPending) {
+      const urlToOptimize = pendingUrl;
+      setUrl(urlToOptimize);
+      setPendingUrl("");
+
+      // Trigger optimization directly
+      setLoadingMessage("Analyzing listing URL...");
+      setOptimizationResult(null);
+
+      optimizeMutation
+        .mutateAsync({
+          url: urlToOptimize,
+          email,
+          name,
+        })
+        .then((result) => {
+          if (result) {
+            setOptimizationResult(result);
+            setLoadingMessage("Checking listing and generating SEO...");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          setLoadingMessage("");
+        });
+    }
+  }, [name, email, pendingUrl, optimizeMutation]);
+
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!url) {
+      if (!url || !email || !name) {
         return;
       }
 
@@ -27,7 +89,11 @@ export default function OptimizerTool() {
       setOptimizationResult(null);
 
       try {
-        const optimizationResult = await optimizeMutation.mutateAsync({ url });
+        const optimizationResult = await optimizeMutation.mutateAsync({
+          url,
+          email,
+          name,
+        });
 
         if (!optimizationResult) {
           throw new Error("Could not generate optimized listing.");
@@ -40,7 +106,7 @@ export default function OptimizerTool() {
         setLoadingMessage("");
       }
     },
-    [url, optimizeMutation],
+    [url, email, name, optimizeMutation],
   );
 
   return (
@@ -61,10 +127,13 @@ export default function OptimizerTool() {
         </header>
 
         <main>
-          <UrlInputForm
+          <OptimizerForm
+            name={name}
+            email={email}
             url={url}
             setUrl={setUrl}
             onSubmit={handleSubmit}
+            onUserInfoSubmitted={handleUserInfoSubmitted}
             isLoading={optimizeMutation.isPending}
           />
 

@@ -3,6 +3,8 @@ import type { OptimizationResult } from "@/types";
 
 interface OptimizeRequest {
   url: string;
+  email: string;
+  name: string;
 }
 
 const optimizeListing = async (
@@ -13,7 +15,11 @@ const optimizeListing = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ url: request.url }),
+    body: JSON.stringify({
+      url: request.url,
+      email: request.email,
+      name: request.name,
+    }),
   });
 
   if (!response.ok) {

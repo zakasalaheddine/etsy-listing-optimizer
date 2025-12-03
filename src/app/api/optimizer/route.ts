@@ -1,4 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
+import { db } from "@/lib/db";
+import { emails } from "@/lib/db/schema";
 import { extractProductDetails } from "./extract-service";
 import { generateOptimizedListing } from "./optimize";
 
@@ -12,9 +14,23 @@ export async function POST(request: Request) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   try {
-    const { url } = await request.json();
+    const { url, email, name } = await request.json();
     if (!url) {
       return Response.json({ error: "URL is required" }, { status: 400 });
+    }
+    if (!email) {
+      return Response.json({ error: "Email is required" }, { status: 400 });
+    }
+    if (!name) {
+      return Response.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    // Store email and name if not already stored
+    try {
+      await db.insert(emails).values({ email, name: name.trim() });
+    } catch {
+      // Ignore duplicate email errors (email already exists)
+      // This is fine - we just want to collect emails, no verification needed
     }
     const details = await extractProductDetails(url, ai);
     if (!details || !details.description || !details.title) {
