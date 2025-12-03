@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/complexity/useOptionalChain: Needed for rate limit error */
 import { useMutation } from "@tanstack/react-query";
 import type { OptimizationResult } from "@/types";
 
@@ -5,6 +6,13 @@ interface OptimizeRequest {
   url: string;
   email: string;
   name: string;
+}
+
+export interface RateLimitError extends Error {
+  rateLimitExceeded?: boolean;
+  contactEmail?: string;
+  remaining?: number;
+  maxPerDay?: number;
 }
 
 const optimizeListing = async (
@@ -26,7 +34,20 @@ const optimizeListing = async (
     const error = await response
       .json()
       .catch(() => ({ error: "Unknown error" }));
-    throw new Error(error.error || "Failed to optimize listing");
+    const rateLimitError: RateLimitError = new Error(
+      error.error || "Failed to optimize listing",
+    );
+    if (response.status === 429) {
+      rateLimitError.rateLimitExceeded = true;
+      // Ensure contactEmail is properly extracted from the error response
+      rateLimitError.contactEmail =
+        error.contactEmail && error.contactEmail.trim()
+          ? error.contactEmail.trim()
+          : undefined;
+      rateLimitError.remaining = error.remaining ?? 0;
+      rateLimitError.maxPerDay = error.maxPerDay ?? 5;
+    }
+    throw rateLimitError;
   }
 
   return response.json();

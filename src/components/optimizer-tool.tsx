@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
-import { useOptimize } from "@/hooks/use-optimize";
+import { type RateLimitError, useOptimize } from "@/hooks/use-optimize";
 import type { OptimizationResult } from "@/types";
 import LoadingSpinner from "./loading-spinner";
 import OptimizerForm from "./optimizer-form";
@@ -15,6 +15,11 @@ export default function OptimizerTool() {
   const [loadingMessage, setLoadingMessage] = useState<string>("");
   const [optimizationResult, setOptimizationResult] =
     useState<OptimizationResult | null>(null);
+  const [rateLimitInfo, setRateLimitInfo] = useState<{
+    remaining: number;
+    maxPerDay: number;
+    contactEmail?: string;
+  } | null>(null);
 
   const optimizeMutation = useOptimize();
 
@@ -67,10 +72,21 @@ export default function OptimizerTool() {
           if (result) {
             setOptimizationResult(result);
             setLoadingMessage("Checking listing and generating SEO...");
+            if (result.rateLimit) {
+              setRateLimitInfo(result.rateLimit);
+            }
           }
         })
         .catch((err) => {
           console.error(err);
+          if ((err as RateLimitError).rateLimitExceeded) {
+            const rateLimitErr = err as RateLimitError;
+            setRateLimitInfo({
+              remaining: rateLimitErr.remaining || 0,
+              maxPerDay: rateLimitErr.maxPerDay || 5,
+              contactEmail: rateLimitErr.contactEmail || undefined,
+            });
+          }
         })
         .finally(() => {
           setLoadingMessage("");
@@ -100,8 +116,19 @@ export default function OptimizerTool() {
         }
         setOptimizationResult(optimizationResult);
         setLoadingMessage("Checking listing and generating SEO...");
+        if (optimizationResult.rateLimit) {
+          setRateLimitInfo(optimizationResult.rateLimit);
+        }
       } catch (err) {
         console.error(err);
+        if ((err as RateLimitError).rateLimitExceeded) {
+          const rateLimitErr = err as RateLimitError;
+          setRateLimitInfo({
+            remaining: rateLimitErr.remaining || 0,
+            maxPerDay: rateLimitErr.maxPerDay || 5,
+            contactEmail: rateLimitErr.contactEmail || undefined,
+          });
+        }
       } finally {
         setLoadingMessage("");
       }
@@ -137,23 +164,59 @@ export default function OptimizerTool() {
             isLoading={optimizeMutation.isPending}
           />
 
+          {rateLimitInfo && (
+            <div
+              className={`mt-6 border-l-4 p-4 rounded-md ${
+                rateLimitInfo.remaining === 0
+                  ? "bg-yellow-100 border-yellow-500 text-yellow-700 dark:bg-yellow-900/20 dark:border-yellow-600 dark:text-yellow-400"
+                  : "bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/20 dark:border-blue-600 dark:text-blue-400"
+              }`}
+              role="alert"
+            >
+              <p className="font-bold">
+                {rateLimitInfo.remaining === 0
+                  ? "Daily Limit Reached"
+                  : "Optimizations Remaining"}
+              </p>
+              {rateLimitInfo.remaining === 0 ? (
+                <p>
+                  Daily limit reached. Request more access:{" "}
+                  <a
+                    href={`mailto:${
+                      rateLimitInfo.contactEmail || "salaheddine@zakadev.com"
+                    }`}
+                    className="underline font-semibold"
+                  >
+                    {rateLimitInfo.contactEmail || "salaheddine@zakadev.com"}
+                  </a>
+                </p>
+              ) : (
+                <p>
+                  You have {rateLimitInfo.remaining} optimization
+                  {rateLimitInfo.remaining !== 1 ? "s" : ""} remaining today.
+                </p>
+              )}
+            </div>
+          )}
+
           {optimizeMutation.isPending && (
             <LoadingSpinner message={loadingMessage} />
           )}
 
-          {optimizeMutation.error && (
-            <div
-              className="mt-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md"
-              role="alert"
-            >
-              <p className="font-bold">Error</p>
-              <p>
-                {optimizeMutation.error instanceof Error
-                  ? optimizeMutation.error.message
-                  : "An unknown error occurred. Please check the URL and try again."}
-              </p>
-            </div>
-          )}
+          {optimizeMutation.error &&
+            !(optimizeMutation.error as RateLimitError).rateLimitExceeded && (
+              <div
+                className="mt-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md"
+                role="alert"
+              >
+                <p className="font-bold">Error</p>
+                <p>
+                  {optimizeMutation.error instanceof Error
+                    ? optimizeMutation.error.message
+                    : "An unknown error occurred. Please check the URL and try again."}
+                </p>
+              </div>
+            )}
 
           {optimizationResult && !optimizeMutation.isPending && (
             <div className="mt-8">

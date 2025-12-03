@@ -20,17 +20,43 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Create a `.env.local` file in the root directory with the following variables:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Gemini AI API Key
+GEMINI_API_KEY=your_gemini_api_key_here
 
-## Deploy on Vercel
+# Rate Limiting Configuration
+# Maximum number of optimizations allowed per email per day
+# Default: 5
+MAX_OPTIMIZATIONS_PER_DAY=5
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Contact email for users to request more access when rate limit is reached
+# Default: support@example.com
+CONTACT_EMAIL=support@example.com
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Required Environment Variables
+
+- `DATABASE_URL` - PostgreSQL database connection string
+- `GEMINI_API_KEY` - Google Gemini API key for AI optimization
+
+### Optional Environment Variables
+
+- `MAX_OPTIMIZATIONS_PER_DAY` - Maximum optimizations per email per day (default: 5)
+- `CONTACT_EMAIL` - Email address for users to contact when rate limit is reached (default: support@example.com)
+
+## Database Setup
+
+After setting up your database, run the migrations:
+
+```bash
+bun run db:push
+```
+
+This will create the necessary tables (`emails` and `optimizations`) in your database.

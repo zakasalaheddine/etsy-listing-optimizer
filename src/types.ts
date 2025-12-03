@@ -19,6 +19,10 @@ export interface OptimizationResult {
   keywords: Keywords;
   titles: RatedItem[];
   tags: RatedItem[];
+  rateLimit?: {
+    remaining: number;
+    maxPerDay: number;
+  };
 }
 
 export interface ProductDetails {

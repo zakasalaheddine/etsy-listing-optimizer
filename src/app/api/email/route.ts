@@ -1,16 +1,13 @@
+import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { emails } from "@/lib/db/schema";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const { name, email } = await request.json();
 
     if (!name || typeof name !== "string" || name.trim().length === 0) {
-      return NextResponse.json(
-        { error: "Name is required" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
@@ -27,7 +24,11 @@ export async function POST(request: Request) {
       .returning();
 
     return NextResponse.json(
-      { name: insertedEmail.name, email: insertedEmail.email, id: insertedEmail.id },
+      {
+        name: insertedEmail.name,
+        email: insertedEmail.email,
+        id: insertedEmail.id,
+      },
       { status: 200 },
     );
   } catch (error) {
@@ -38,4 +39,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

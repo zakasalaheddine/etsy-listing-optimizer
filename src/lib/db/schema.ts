@@ -1,4 +1,11 @@
-import { pgTable, text, timestamp, uuid, unique } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+  uuid,
+} from "drizzle-orm/pg-core";
 
 export const emails = pgTable(
   "emails",
@@ -13,3 +20,15 @@ export const emails = pgTable(
   }),
 );
 
+export const optimizations = pgTable(
+  "optimizations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    emailIdx: index("optimizations_email_idx").on(table.email),
+    createdAtIdx: index("optimizations_created_at_idx").on(table.createdAt),
+  }),
+);
