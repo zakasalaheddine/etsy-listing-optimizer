@@ -24,6 +24,7 @@ export interface OptimizationResult {
 export interface ProductDetails {
   title: string;
   description: string;
+  tags: string[];
 }
 
 export interface TrademarkAnalysis {
