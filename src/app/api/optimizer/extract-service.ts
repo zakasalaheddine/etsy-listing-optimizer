@@ -1,16 +1,15 @@
 import { type GoogleGenAI, Type } from "@google/genai";
 import type { ProductDetails } from "@/types";
+import { EXTRACT_SYSTEM_PROMPT } from "./prompts";
 
 export const extractProductDetails = async (
   url: string,
   ai: GoogleGenAI,
 ): Promise<ProductDetails> => {
-  const prompt = `You are a web scraper and product analyst. Based on the content at this URL: ${url}, extract the product title, a detailed description of the product, and the tags that are used in the product. Focus on its function, material, size, customization options (if any), and intended audience/occasion.`;
-
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: prompt,
+      contents: EXTRACT_SYSTEM_PROMPT(url),
       config: {
         responseMimeType: "application/json",
         responseSchema: {
