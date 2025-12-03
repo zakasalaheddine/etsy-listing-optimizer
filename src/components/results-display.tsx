@@ -1,19 +1,14 @@
 import { useState } from "react";
-import type { OptimizationResult, TrademarkAnalysis } from "@/types";
+import type { OptimizationResult } from "@/types";
 import CopyButton from "./copy-button";
 import { CheckIcon } from "./icons";
 import ScoreBar from "./score-bar";
-import TrademarkSection from "./trademark-section";
 
 interface ResultsDisplayProps {
   result: OptimizationResult;
-  trademarkAnalysis: TrademarkAnalysis;
 }
 
-export default function ResultsDisplay({
-  result,
-  trademarkAnalysis,
-}: ResultsDisplayProps) {
+export default function ResultsDisplay({ result }: ResultsDisplayProps) {
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
   const [selectedCopied, setSelectedCopied] = useState(false);
 
@@ -71,9 +66,6 @@ export default function ResultsDisplay({
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Trademark Section */}
-      {trademarkAnalysis && <TrademarkSection analysis={trademarkAnalysis} />}
-
       <h2 className="text-2xl font-bold text-center text-slate-800 dark:text-slate-200">
         Optimized Content for:{" "}
         <span className="text-teal-500">{productType || "Your Product"}</span>

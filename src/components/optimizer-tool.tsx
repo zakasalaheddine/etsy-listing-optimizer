@@ -1,66 +1,46 @@
 "use client";
+
 import type React from "react";
 import { useCallback, useState } from "react";
-import type { OptimizationResult, TrademarkAnalysis } from "@/types";
+import { useOptimize } from "@/hooks/use-optimize";
+import type { OptimizationResult } from "@/types";
 import LoadingSpinner from "./loading-spinner";
 import ResultsDisplay from "./results-display";
-// import { extractProductDetails, generateOptimizedListing, analyzeTrademarks } from './services/geminiService'
 import UrlInputForm from "./url-input-form";
 
 export default function OptimizerTool() {
   const [url, setUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingMessage, setLoadingMessage] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
   const [optimizationResult, setOptimizationResult] =
     useState<OptimizationResult | null>(null);
-  const [trademarkAnalysis, setTrademarkAnalysis] =
-    useState<TrademarkAnalysis | null>(null);
+
+  const optimizeMutation = useOptimize();
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (!url) {
-        setError("Please enter a valid Etsy URL.");
         return;
       }
 
-      setIsLoading(true);
-      setError(null);
+      setLoadingMessage("Analyzing listing URL...");
       setOptimizationResult(null);
-      setTrademarkAnalysis(null);
 
       try {
-        setLoadingMessage("Analyzing listing URL...");
-        // const details = await extractProductDetails(url);
+        const optimizationResult = await optimizeMutation.mutateAsync({ url });
 
-        // if (!details || !details.description) {
-        //   throw new Error("Could not extract product details from the URL.");
-        // }
-
-        // setLoadingMessage("Checking trademarks and generating SEO...");
-
-        // // Run trademark check and SEO generation in parallel
-        // const [optResult, tmResult] = await Promise.all([
-        //   generateOptimizedListing(details.description),
-        //   analyzeTrademarks(details.title),
-        // ]);
-
-        // setOptimizationResult(optResult);
-        // setTrademarkAnalysis(tmResult);
+        if (!optimizationResult) {
+          throw new Error("Could not generate optimized listing.");
+        }
+        setOptimizationResult(optimizationResult);
+        setLoadingMessage("Checking listing and generating SEO...");
       } catch (err) {
         console.error(err);
-        setError(
-          err instanceof Error
-            ? err.message
-            : "An unknown error occurred. Please check the URL and try again.",
-        );
       } finally {
-        setIsLoading(false);
         setLoadingMessage("");
       }
     },
-    [url],
+    [url, optimizeMutation],
   );
 
   return (
@@ -85,27 +65,30 @@ export default function OptimizerTool() {
             url={url}
             setUrl={setUrl}
             onSubmit={handleSubmit}
-            isLoading={isLoading}
+            isLoading={optimizeMutation.isPending}
           />
 
-          {isLoading && <LoadingSpinner message={loadingMessage} />}
+          {optimizeMutation.isPending && (
+            <LoadingSpinner message={loadingMessage} />
+          )}
 
-          {error && (
+          {optimizeMutation.error && (
             <div
               className="mt-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md"
               role="alert"
             >
               <p className="font-bold">Error</p>
-              <p>{error}</p>
+              <p>
+                {optimizeMutation.error instanceof Error
+                  ? optimizeMutation.error.message
+                  : "An unknown error occurred. Please check the URL and try again."}
+              </p>
             </div>
           )}
 
-          {optimizationResult && trademarkAnalysis && !isLoading && (
+          {optimizationResult && !optimizeMutation.isPending && (
             <div className="mt-8">
-              <ResultsDisplay
-                result={optimizationResult}
-                trademarkAnalysis={trademarkAnalysis}
-              />
+              <ResultsDisplay result={optimizationResult} />
             </div>
           )}
         </main>
