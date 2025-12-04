@@ -8,7 +8,6 @@ import type { OptimizationResult } from "@/types";
 import BeforeAfter from "./landing/before-after";
 import HeroCTA from "./landing/hero-cta";
 import HowItWorks from "./landing/how-it-works";
-import SocialProof from "./landing/social-proof";
 import LoadingSpinner from "./loading-spinner";
 import OptimizerForm from "./optimizer-form";
 import ResultsDisplay from "./results-display";
@@ -290,9 +289,6 @@ export default function OptimizerTool() {
 
       {/* Before/After Section */}
       <BeforeAfter />
-
-      {/* Social Proof Section */}
-      <SocialProof />
 
       {/* Footer */}
       <footer className="bg-slate-900 dark:bg-slate-950 text-slate-300 py-8">
