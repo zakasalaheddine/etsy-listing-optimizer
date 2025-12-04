@@ -4,14 +4,13 @@ import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type RateLimitError, useOptimize } from "@/hooks/use-optimize";
 import type { OptimizationResult } from "@/types";
+import BeforeAfter from "./landing/before-after";
+import HeroCTA from "./landing/hero-cta";
+import HowItWorks from "./landing/how-it-works";
+import SocialProof from "./landing/social-proof";
 import LoadingSpinner from "./loading-spinner";
 import OptimizerForm from "./optimizer-form";
 import ResultsDisplay from "./results-display";
-import HeroSection from "./landing/hero-section";
-import HeroCTA from "./landing/hero-cta";
-import HowItWorks from "./landing/how-it-works";
-import BeforeAfter from "./landing/before-after";
-import SocialProof from "./landing/social-proof";
 
 export default function OptimizerTool() {
   const [name, setName] = useState<string | null>(null);
@@ -184,77 +183,91 @@ export default function OptimizerTool() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Hero Section with Integrated Tool */}
+      <section className="relative overflow-hidden bg-teal-50 dark:bg-slate-900">
+        <div className="absolute inset-0 bg-grid-slate-200/50 dark:bg-grid-slate-700/25 mask-[linear-gradient(0deg,transparent,black)]" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <div className="text-center max-w-4xl mx-auto mb-12">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-6">
+              <span className="block">AI-Powered</span>
+              <span className="block text-teal-600 dark:text-teal-400">
+                Etsy Listing Optimizer
+              </span>
+            </h1>
+            <p className="text-xl sm:text-2xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+              Turn your Etsy listings into sales magnets with AI-optimized
+              titles, descriptions, and tags
+            </p>
+          </div>
 
-      {/* Optimizer Form Section */}
-      <section id="optimizer" className="py-12 bg-white dark:bg-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <OptimizerForm
-            name={name}
-            email={email}
-            url={url}
-            setUrl={setUrl}
-            onSubmit={handleSubmit}
-            onUserInfoSubmitted={handleUserInfoSubmitted}
-            isLoading={optimizeMutation.isPending}
-          />
+          {/* Optimizer Tool */}
+          <div className="max-w-4xl mx-auto">
+            <OptimizerForm
+              name={name}
+              email={email}
+              url={url}
+              setUrl={setUrl}
+              onSubmit={handleSubmit}
+              onUserInfoSubmitted={handleUserInfoSubmitted}
+              isLoading={optimizeMutation.isPending}
+            />
 
-          <HeroCTA />
+            <HeroCTA />
 
-          {rateLimitInfo && (
-            <div
-              className={`mt-6 border-l-4 p-4 rounded-md ${
-                rateLimitInfo.remaining === 0
-                  ? "bg-yellow-100 border-yellow-500 text-yellow-700 dark:bg-yellow-900/20 dark:border-yellow-600 dark:text-yellow-400"
-                  : "bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/20 dark:border-blue-600 dark:text-blue-400"
-              }`}
-              role="alert"
-            >
-              <p className="font-bold">
-                {rateLimitInfo.remaining === 0
-                  ? "Daily Limit Reached"
-                  : "Optimizations Remaining"}
-              </p>
-              {rateLimitInfo.remaining === 0 ? (
-                <p>
-                  Daily limit reached. Request more access:{" "}
-                  <a
-                    href={`mailto:${
-                      rateLimitInfo.contactEmail || "salaheddine@zakadev.com"
-                    }`}
-                    className="underline font-semibold"
-                  >
-                    {rateLimitInfo.contactEmail || "salaheddine@zakadev.com"}
-                  </a>
-                </p>
-              ) : (
-                <p>
-                  You have {rateLimitInfo.remaining} optimization
-                  {rateLimitInfo.remaining !== 1 ? "s" : ""} remaining today.
-                </p>
-              )}
-            </div>
-          )}
-
-          {optimizeMutation.isPending && (
-            <LoadingSpinner message={loadingMessage} step={loadingStep} />
-          )}
-
-          {optimizeMutation.error &&
-            !(optimizeMutation.error as RateLimitError).rateLimitExceeded && (
+            {rateLimitInfo && (
               <div
-                className="mt-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md"
+                className={`mt-6 border-l-4 p-4 rounded-md ${
+                  rateLimitInfo.remaining === 0
+                    ? "bg-yellow-100 border-yellow-500 text-yellow-700 dark:bg-yellow-900/20 dark:border-yellow-600 dark:text-yellow-400"
+                    : "bg-blue-100 border-blue-500 text-blue-700 dark:bg-blue-900/20 dark:border-blue-600 dark:text-blue-400"
+                }`}
                 role="alert"
               >
-                <p className="font-bold">Error</p>
-                <p>
-                  {optimizeMutation.error instanceof Error
-                    ? optimizeMutation.error.message
-                    : "An unknown error occurred. Please check the URL and try again."}
+                <p className="font-bold">
+                  {rateLimitInfo.remaining === 0
+                    ? "Daily Limit Reached"
+                    : "Optimizations Remaining"}
                 </p>
+                {rateLimitInfo.remaining === 0 ? (
+                  <p>
+                    Daily limit reached. Request more access:{" "}
+                    <a
+                      href={`mailto:${
+                        rateLimitInfo.contactEmail || "salaheddine@zakadev.com"
+                      }`}
+                      className="underline font-semibold"
+                    >
+                      {rateLimitInfo.contactEmail || "salaheddine@zakadev.com"}
+                    </a>
+                  </p>
+                ) : (
+                  <p>
+                    You have {rateLimitInfo.remaining} optimization
+                    {rateLimitInfo.remaining !== 1 ? "s" : ""} remaining today.
+                  </p>
+                )}
               </div>
             )}
+
+            {optimizeMutation.isPending && (
+              <LoadingSpinner message={loadingMessage} step={loadingStep} />
+            )}
+
+            {optimizeMutation.error &&
+              !(optimizeMutation.error as RateLimitError).rateLimitExceeded && (
+                <div
+                  className="mt-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md"
+                  role="alert"
+                >
+                  <p className="font-bold">Error</p>
+                  <p>
+                    {optimizeMutation.error instanceof Error
+                      ? optimizeMutation.error.message
+                      : "An unknown error occurred. Please check the URL and try again."}
+                  </p>
+                </div>
+              )}
+          </div>
         </div>
       </section>
 
@@ -265,7 +278,7 @@ export default function OptimizerTool() {
           id="results"
           className="py-12 bg-slate-50 dark:bg-slate-900"
         >
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ResultsDisplay result={optimizationResult} />
           </div>
         </section>

@@ -17,7 +17,7 @@ export default function BeforeAfter() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Before */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border-2 border-red-200 dark:border-red-900">
-            <div className="bg-linear-to-r from-red-500 to-red-600 px-6 py-4">
+            <div className="bg-red-500 px-6 py-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                   <svg
@@ -84,7 +84,7 @@ export default function BeforeAfter() {
 
           {/* After */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border-2 border-teal-200 dark:border-teal-900">
-            <div className="bg-linear-to-r from-teal-500 to-blue-500 px-6 py-4">
+            <div className="bg-teal-500 px-6 py-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                   <svg
@@ -120,7 +120,7 @@ export default function BeforeAfter() {
                 </p>
                 <div className="mt-2 flex items-center gap-2">
                   <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                    <div className="h-full bg-linear-to-r from-teal-500 to-blue-500 w-11/12" />
+                    <div className="h-full bg-teal-500 w-11/12" />
                   </div>
                   <span className="text-xs font-semibold text-teal-600 dark:text-teal-400">
                     92/100
@@ -143,7 +143,7 @@ export default function BeforeAfter() {
                   ].map((tag) => (
                     <span
                       key={tag}
-                      className="bg-linear-to-br from-teal-50 to-blue-50 dark:from-teal-900/30 dark:to-blue-900/30 text-teal-700 dark:text-teal-400 text-xs px-2 py-1 rounded border border-teal-200 dark:border-teal-800"
+                      className="bg-teal-50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 text-xs px-2 py-1 rounded border border-teal-200 dark:border-teal-800"
                     >
                       {tag}
                     </span>
@@ -160,7 +160,7 @@ export default function BeforeAfter() {
         </div>
 
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-3 bg-linear-to-br from-teal-50 to-blue-50 dark:from-teal-900/30 dark:to-blue-900/30 border border-teal-200 dark:border-teal-800 rounded-full px-6 py-3">
+          <div className="inline-flex items-center gap-3 bg-teal-50 dark:bg-teal-900/30 border border-teal-200 dark:border-teal-800 rounded-full px-6 py-3">
             <svg
               className="w-5 h-5 text-teal-600 dark:text-teal-400"
               fill="none"

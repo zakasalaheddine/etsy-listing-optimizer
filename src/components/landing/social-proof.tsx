@@ -2,10 +2,10 @@ export default function SocialProof() {
   return (
     <section className="py-16 sm:py-20 bg-white dark:bg-slate-800">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-750 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-600 overflow-hidden">
+        <div className="bg-slate-50 dark:bg-slate-700 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-600 overflow-hidden">
           <div className="p-8 sm:p-12">
             <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-full bg-linear-to-br from-teal-500 to-blue-500 flex items-center justify-center mb-6 shadow-lg">
+              <div className="w-20 h-20 rounded-full bg-teal-500 flex items-center justify-center mb-6 shadow-lg">
                 <svg
                   className="w-10 h-10 text-white"
                   fill="none"

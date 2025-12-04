@@ -88,8 +88,7 @@ export default function HowItWorks() {
             <div key={step.number} className="relative group">
               <div className="flex flex-col items-center text-center">
                 <div className="relative mb-6">
-                  <div className="absolute inset-0 bg-linear-to-br from-teal-400 to-blue-500 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-                  <div className="relative bg-linear-to-br from-teal-500 to-blue-500 text-white rounded-2xl p-6 shadow-xl group-hover:shadow-2xl transition-shadow">
+                  <div className="relative bg-teal-500 text-white rounded-2xl p-6 shadow-xl group-hover:shadow-2xl transition-shadow">
                     {step.icon}
                   </div>
                   <div className="absolute -top-3 -right-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg shadow-lg border-2 border-teal-500">
@@ -104,8 +103,8 @@ export default function HowItWorks() {
                 </p>
               </div>
               {step.number < 3 && (
-                <div className="hidden md:block absolute top-16 left-full w-12 h-0.5 bg-linear-to-r from-teal-300 to-blue-300 dark:from-teal-600 dark:to-blue-600 -translate-x-6">
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-l-8 border-l-blue-300 dark:border-l-blue-600 border-y-4 border-y-transparent" />
+                <div className="hidden md:block absolute top-16 left-full w-12 h-0.5 bg-teal-300 dark:bg-teal-600 -translate-x-6">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-l-8 border-l-teal-300 dark:border-l-teal-600 border-y-4 border-y-transparent" />
                 </div>
               )}
             </div>
