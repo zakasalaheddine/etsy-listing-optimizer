@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type RateLimitError, useOptimize } from "@/hooks/use-optimize";
@@ -297,10 +298,18 @@ export default function OptimizerTool() {
       <footer className="bg-slate-900 dark:bg-slate-950 text-slate-300 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm">
-            Built with AI by a developer who runs an Etsy store
+            Built with AI by a{" "}
+            <Link
+              href="https://zakadev.com"
+              target="_blank"
+              className="underline font-semibold"
+            >
+              <span className="underline font-semibold">developer</span>
+            </Link>{" "}
+            who runs an Etsy store
           </p>
           <p className="text-xs mt-2 text-slate-400">
-            Using the 2025 10-Minute SEO Method with Google Gemini AI
+            Using the Who, What, Where, When, Why SEO Method with Google Gemini AI
           </p>
         </div>
       </footer>
