@@ -1,12 +1,17 @@
 "use client";
 
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { type RateLimitError, useOptimize } from "@/hooks/use-optimize";
 import type { OptimizationResult } from "@/types";
 import LoadingSpinner from "./loading-spinner";
 import OptimizerForm from "./optimizer-form";
 import ResultsDisplay from "./results-display";
+import HeroSection from "./landing/hero-section";
+import HeroCTA from "./landing/hero-cta";
+import HowItWorks from "./landing/how-it-works";
+import BeforeAfter from "./landing/before-after";
+import SocialProof from "./landing/social-proof";
 
 export default function OptimizerTool() {
   const [name, setName] = useState<string | null>(null);
@@ -23,6 +28,7 @@ export default function OptimizerTool() {
   } | null>(null);
 
   const optimizeMutation = useOptimize();
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   // Load name and email from localStorage on mount
   useEffect(() => {
@@ -51,6 +57,18 @@ export default function OptimizerTool() {
     },
     [url],
   );
+
+  // Scroll to results when optimization completes
+  useEffect(() => {
+    if (optimizationResult && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    }
+  }, [optimizationResult]);
 
   // Auto-trigger optimization when user info becomes available and URL is pending
   useEffect(() => {
@@ -165,23 +183,13 @@ export default function OptimizerTool() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 font-sans p-4 sm:p-6 lg:p-8">
-      <div className="max-w-4xl mx-auto">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-teal-400 to-blue-500">
-            Etsy Listing Optimizer
-          </h1>
-          <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">
-            Paste an Etsy listing URL to generate SEO-optimized content based on
-            the 2025 10-Minute Method.
-            <br />
-            <span className="text-sm font-medium text-teal-600 dark:text-teal-400">
-              Now includes Trademark Safety Check
-            </span>
-          </p>
-        </header>
+    <div className="min-h-screen bg-white dark:bg-slate-900">
+      {/* Hero Section */}
+      <HeroSection />
 
-        <main>
+      {/* Optimizer Form Section */}
+      <section id="optimizer" className="py-12 bg-white dark:bg-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <OptimizerForm
             name={name}
             email={email}
@@ -191,6 +199,8 @@ export default function OptimizerTool() {
             onUserInfoSubmitted={handleUserInfoSubmitted}
             isLoading={optimizeMutation.isPending}
           />
+
+          <HeroCTA />
 
           {rateLimitInfo && (
             <div
@@ -245,14 +255,42 @@ export default function OptimizerTool() {
                 </p>
               </div>
             )}
+        </div>
+      </section>
 
-          {optimizationResult && !optimizeMutation.isPending && (
-            <div className="mt-8">
-              <ResultsDisplay result={optimizationResult} />
-            </div>
-          )}
-        </main>
-      </div>
+      {/* Results Section */}
+      {optimizationResult && !optimizeMutation.isPending && (
+        <section
+          ref={resultsRef}
+          id="results"
+          className="py-12 bg-slate-50 dark:bg-slate-900"
+        >
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ResultsDisplay result={optimizationResult} />
+          </div>
+        </section>
+      )}
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
+      {/* Before/After Section */}
+      <BeforeAfter />
+
+      {/* Social Proof Section */}
+      <SocialProof />
+
+      {/* Footer */}
+      <footer className="bg-slate-900 dark:bg-slate-950 text-slate-300 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm">
+            Built with AI by a developer who runs an Etsy store
+          </p>
+          <p className="text-xs mt-2 text-slate-400">
+            Using the 2025 10-Minute SEO Method with Google Gemini AI
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
