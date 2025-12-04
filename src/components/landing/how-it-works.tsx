@@ -26,7 +26,7 @@ export default function HowItWorks() {
       number: 2,
       title: "Get AI-powered analysis",
       description:
-        "Our AI analyzes your product details and generates SEO-optimized content using the 2025 10-Minute Method",
+        "Our AI analyzes your product details and generates SEO-optimized content using the Who, What, Where, When, Why Method",
       icon: (
         <svg
           className="w-8 h-8"

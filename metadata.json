@@ -1,0 +1,120 @@
+{
+  "siteName": "Etsy Listing Optimizer",
+  "siteUrl": "https://etsylistingoptimizer.com",
+  "title": {
+    "default": "Etsy Listing Optimizer - AI-Powered SEO Tool for Etsy Sellers",
+    "template": "%s | Etsy Listing Optimizer"
+  },
+  "description": "Free AI-powered Etsy listing optimizer using the Who, What, Where, When, Why SEO Method. Generate optimized titles, tags, and keywords to boost your Etsy shop visibility and sales.",
+  "keywords": [
+    "Etsy SEO",
+    "Etsy listing optimizer",
+    "Etsy tags generator",
+    "Etsy title optimizer",
+    "Etsy keyword research",
+    "Etsy SEO tool",
+    "Etsy shop optimization",
+    "Etsy seller tools",
+    "Etsy listing keywords",
+    "AI Etsy optimizer",
+    "Etsy tag generator free",
+    "Etsy SEO strategy",
+    "optimize Etsy listings",
+    "Etsy product SEO",
+    "Etsy search optimization"
+  ],
+  "authors": [
+    {
+      "name": "ZAKA Salah Eddine"
+    }
+  ],
+  "creator": "ZAKA Salah Eddine",
+  "publisher": "ZAKA Salah Eddine",
+  "applicationName": "Etsy Listing Optimizer",
+  "category": "Business & Productivity",
+  "classification": "E-commerce SEO Tool",
+  "robots": {
+    "index": true,
+    "follow": true,
+    "googleBot": {
+      "index": true,
+      "follow": true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1
+    }
+  },
+  "openGraph": {
+    "type": "website",
+    "locale": "en_US",
+    "url": "https://etsylistingoptimizer.com",
+    "siteName": "Etsy Listing Optimizer",
+    "title": "Etsy Listing Optimizer - AI-Powered SEO Tool for Etsy Sellers",
+    "description": "Free AI-powered Etsy listing optimizer using the Who, What, Where, When, Why SEO Method. Generate optimized titles, tags, and keywords to boost your Etsy shop visibility and sales.",
+    "images": [
+      {
+        "url": "/og-image.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Etsy Listing Optimizer - AI-Powered SEO Tool",
+        "type": "image/png"
+      }
+    ]
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "title": "Etsy Listing Optimizer - AI-Powered SEO Tool for Etsy Sellers",
+    "description": "Free AI-powered Etsy listing optimizer using the Who, What, Where, When, Why SEO Method. Generate optimized titles, tags, and keywords to boost your Etsy shop visibility.",
+    "creator": "@etsyoptimizer",
+    "images": ["/twitter-image.png"]
+  },
+  "alternates": {
+    "canonical": "https://etsylistingoptimizer.com"
+  },
+  "icons": {
+    "icon": [
+      { "url": "/favicon.ico", "sizes": "any" },
+      { "url": "/icon.svg", "type": "image/svg+xml" },
+      { "url": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+      { "url": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    ],
+    "apple": [
+      { "url": "/apple-icon.png", "sizes": "180x180", "type": "image/png" }
+    ]
+  },
+  "manifest": "/manifest.json",
+  "themeColor": [
+    { "media": "(prefers-color-scheme: light)", "color": "#ffffff" },
+    { "media": "(prefers-color-scheme: dark)", "color": "#0a0a0a" }
+  ],
+  "viewport": {
+    "width": "device-width",
+    "initialScale": 1,
+    "maximumScale": 5,
+    "userScalable": true,
+    "viewportFit": "cover"
+  },
+  "verification": {
+    "google": "",
+    "yandex": "",
+    "bing": "",
+    "other": {
+      "me": []
+    }
+  },
+  "appleWebApp": {
+    "capable": true,
+    "title": "Etsy Optimizer",
+    "statusBarStyle": "black-translucent"
+  },
+  "formatDetection": {
+    "telephone": false,
+    "date": false,
+    "address": false,
+    "email": false
+  },
+  "other": {
+    "rating": "General",
+    "referrer": "origin-when-cross-origin"
+  }
+}
