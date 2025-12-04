@@ -18,6 +18,7 @@ export interface OptimizationResult {
   productType: string;
   keywords: Keywords;
   titles: RatedItem[];
+  descriptions: RatedItem[];
   tags: RatedItem[];
   rateLimit?: {
     remaining: number;

@@ -58,6 +58,23 @@ export const generateOptimizedListing = async (
                 required: ["text", "score"],
               },
             },
+            descriptions: {
+              type: Type.ARRAY,
+              description:
+                "An array of 5 distinct, SEO-optimized product descriptions. Each should be 150-300 words and retain all focus keywords from the original description.",
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  text: { type: Type.STRING },
+                  score: {
+                    type: Type.NUMBER,
+                    description:
+                      "A score from 1-100 for the description's quality based on keyword retention, customer appeal, completeness, and SEO effectiveness.",
+                  },
+                },
+                required: ["text", "score"],
+              },
+            },
             tags: {
               type: Type.ARRAY,
               description:
@@ -75,7 +92,13 @@ export const generateOptimizedListing = async (
               },
             },
           },
-          required: ["productType", "keywords", "titles", "tags"],
+          required: [
+            "productType",
+            "keywords",
+            "titles",
+            "descriptions",
+            "tags",
+          ],
         },
       },
     });

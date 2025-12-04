@@ -45,7 +45,29 @@ Customer Experience: Each title must be legible, clear, and make sense to the cu
 Utilization: Use as many Anchor and Descriptive keywords from Step 1 as possible.
 Scoring: For each title, provide a score from 1 to 100, where 100 is the best, based on keyword relevance, customer readability, and adherence to the structure.
 
-2. Tags (High Importance)
+2. Product Descriptions (Highest Importance)
+Purpose: Generate compelling, SEO-optimized product descriptions that incorporate focus keywords while maintaining natural readability.
+Quantity: Generate 5 distinct description variations.
+Requirements:
+  - Each description MUST retain all focus keywords from the original product description
+  - Include relevant Anchor and Descriptive keywords naturally throughout the text
+  - Structure descriptions to be customer-focused: what the product is, its benefits, features, and use cases
+  - Write in a compelling, natural tone that appeals to the target customer (avoid keyword stuffing)
+  - Each description should be comprehensive but concise (150-300 words recommended)
+  - Vary the emphasis in each variation (e.g., feature-focused, benefit-focused, story-focused, etc.)
+  - Incorporate the Five W's keywords (Who, What, Where, When, Why) naturally where relevant
+Content Strategy:
+  - Start with a strong hook that includes key Anchor keywords
+  - Describe the product's materials, size, features using Descriptive keywords
+  - Highlight benefits and use cases using the Five W's keywords
+  - End with a call-to-action or value proposition
+Scoring: For each description, provide a score from 1 to 100, where 100 is the best, based on:
+  - Keyword retention and natural integration
+  - Customer appeal and readability
+  - Completeness of product information
+  - SEO effectiveness without appearing spammy
+
+3. Tags (High Importance)
 Quantity: Generate 30 distinct tag variations.
 Goal: Maximize character space (20 characters per tag).
 Strategy: Combine words from the Five W's lists (and any unused Anchor/Descriptive keywords) to cram as many relevant terms as possible into each tag. Tags do not need to make grammatical sense.
