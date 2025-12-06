@@ -24,11 +24,12 @@ export default defineConfig({
         "src/app/sitemap.ts",
         "src/app/opengraph-image.tsx",
       ],
-      all: true,
-      lines: 100,
-      functions: 100,
-      branches: 100,
-      statements: 100,
+      thresholds: {
+        lines: 100,
+        functions: 100,
+        branches: 100,
+        statements: 100,
+      },
     },
   },
   resolve: {

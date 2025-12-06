@@ -1,9 +1,7 @@
 import type React from "react";
 
 interface StructuredDataProps {
-	data:
-		| Record<string, unknown>
-		| Array<Record<string, unknown>>;
+	data: unknown | Array<unknown>;
 }
 
 export default function StructuredData({ data }: StructuredDataProps) {

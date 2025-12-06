@@ -178,6 +178,49 @@ This optimizer implements a proven SEO methodology specifically designed for Ets
 - Prevents abuse while keeping it free
 - Email stored only for rate limiting (not verified)
 
+## Testing
+
+This project includes comprehensive test coverage:
+
+### Unit Tests (Vitest)
+- Located in `src/**/*.test.ts`
+- Tests for utilities, hooks, and API services
+- Run with `npm run test`
+
+### E2E Tests (Playwright)
+- Located in `e2e/`
+- Complete user flow testing across multiple browsers
+- Tests for:
+  - First-time user flow
+  - Returning user flow
+  - Rate limiting scenarios
+  - Error handling
+  - Results display and copy functionality
+  - Edge cases and boundary conditions
+- Run with `npm run test:e2e`
+- See [e2e/README.md](e2e/README.md) for detailed documentation
+
+### Running Tests
+
+```bash
+# Unit tests
+npm run test              # Run all unit tests
+npm run test:ui           # Run with interactive UI
+npm run test:coverage     # Generate coverage report
+
+# E2E tests
+npm run test:e2e          # Run all e2e tests (headless)
+npm run test:e2e:ui       # Run with Playwright UI
+npm run test:e2e:headed   # Run in headed mode (see browser)
+npm run test:e2e:debug    # Debug mode
+```
+
+### CI/CD Testing
+- E2E tests run automatically on every push to `main` or `develop`
+- GitHub Actions workflow: `.github/workflows/e2e-tests.yml`
+- PostgreSQL service container for database tests
+- Test reports and artifacts uploaded on failure
+
 ## Project Structure
 
 ```
@@ -202,8 +245,24 @@ etsy-listing-optimizer/
 │   │   └── structured-data.ts  # JSON-LD generators
 │   ├── hooks/                  # Custom React hooks
 │   │   └── use-optimize.ts     # Optimization mutation hook
-│   └── types.ts                # TypeScript interfaces
+│   ├── types.ts                # TypeScript interfaces
+│   └── __tests__/              # Unit test setup
+├── e2e/                        # E2E tests (Playwright)
+│   ├── first-time-user.spec.ts
+│   ├── returning-user.spec.ts
+│   ├── rate-limiting.spec.ts
+│   ├── error-handling.spec.ts
+│   ├── results-display.spec.ts
+│   ├── edge-cases.spec.ts
+│   ├── fixtures.ts             # Test fixtures and helpers
+│   ├── global-setup.ts         # Global test setup
+│   └── README.md               # E2E testing documentation
+├── .github/
+│   └── workflows/
+│       └── e2e-tests.yml       # CI/CD workflow for e2e tests
 ├── public/                     # Static assets
+├── playwright.config.ts        # Playwright configuration
+├── vitest.config.ts            # Vitest configuration
 ├── metadata.json               # Centralized SEO config
 ├── SEO.md                      # SEO implementation guide
 ├── SEO-CHECKLIST.md            # Pre-launch SEO checklist
@@ -258,6 +317,15 @@ npm run db:generate      # Generate migrations
 # Code Quality
 npm run lint             # Run Biome linter
 npm run format           # Format code with Biome
+
+# Testing
+npm run test             # Run unit tests (Vitest)
+npm run test:ui          # Run unit tests with UI
+npm run test:coverage    # Generate coverage report
+npm run test:e2e         # Run e2e tests (Playwright)
+npm run test:e2e:ui      # Run e2e tests with UI
+npm run test:e2e:headed  # Run e2e tests in headed mode
+npm run test:e2e:debug   # Debug e2e tests
 ```
 
 ## Deployment
