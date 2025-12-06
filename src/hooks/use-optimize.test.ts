@@ -17,7 +17,11 @@ const createWrapper = () => {
   });
 
   const Wrapper = ({ children }: { children: ReactNode }) => {
-    return React.createElement(QueryClientProvider, { client: queryClient }, children);
+    return React.createElement(
+      QueryClientProvider,
+      { client: queryClient },
+      children,
+    );
   };
 
   return Wrapper;

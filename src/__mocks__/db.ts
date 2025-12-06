@@ -73,15 +73,17 @@ export class MockDatabase {
    */
   countOptimizations(email: string, startDate: Date): number {
     return this.optimizationsData.filter(
-      (record) =>
-        record.email === email && record.createdAt >= startDate,
+      (record) => record.email === email && record.createdAt >= startDate,
     ).length;
   }
 
   /**
    * Set up predefined data for testing
    */
-  seedData(emails: typeof this.emailsData, optimizations: typeof this.optimizationsData) {
+  seedData(
+    emails: typeof this.emailsData,
+    optimizations: typeof this.optimizationsData,
+  ) {
     this.emailsData = [...emails];
     this.optimizationsData = [...optimizations];
   }
@@ -103,17 +105,22 @@ export function createMockDb(options?: {
 }) {
   const mockSelect = vi.fn().mockReturnValue({
     from: vi.fn().mockReturnValue({
-      where: vi.fn().mockResolvedValue(
-        options?.selectOptimizationsResult || [{ count: 0 }],
-      ),
+      where: vi
+        .fn()
+        .mockResolvedValue(
+          options?.selectOptimizationsResult || [{ count: 0 }],
+        ),
     }),
   });
 
   const mockInsert = vi.fn((table: unknown) => {
     // Determine which table is being inserted into
     // Use a safe property check instead of JSON.stringify to avoid circular reference errors
-    const tableName = String((table as any)?._?.name || (table as any)?.name || "");
-    const isEmailsTable = tableName === "emails" || tableName.includes("emails");
+    const tableName = String(
+      (table as any)?._?.name || (table as any)?.name || "",
+    );
+    const isEmailsTable =
+      tableName === "emails" || tableName.includes("emails");
 
     return {
       values: vi.fn().mockImplementation(async (values: unknown) => {
@@ -200,8 +207,11 @@ export function createCustomMockDb(config: {
 }) {
   const mockInsert = vi.fn((table: unknown) => {
     // Use a safe property check instead of JSON.stringify to avoid circular reference errors
-    const tableName = String((table as any)?._?.name || (table as any)?.name || "");
-    const isEmailsTable = tableName === "emails" || tableName.includes("emails");
+    const tableName = String(
+      (table as any)?._?.name || (table as any)?.name || "",
+    );
+    const isEmailsTable =
+      tableName === "emails" || tableName.includes("emails");
 
     return {
       values: vi.fn().mockImplementation(async (values: unknown) => {
@@ -235,9 +245,9 @@ export function createCustomMockDb(config: {
 
   const mockSelect = vi.fn().mockReturnValue({
     from: vi.fn().mockReturnValue({
-      where: vi.fn().mockResolvedValue([
-        { count: config.todayOptimizationsCount || 0 },
-      ]),
+      where: vi
+        .fn()
+        .mockResolvedValue([{ count: config.todayOptimizationsCount || 0 }]),
     }),
   });
 

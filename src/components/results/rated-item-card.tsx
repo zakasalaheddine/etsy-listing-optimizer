@@ -36,7 +36,7 @@ export default function RatedItemCard({
   const badge = getScoreBadge(item.score);
 
   return (
-    <div className="relative bg-slate-50 dark:bg-slate-750 border border-slate-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+    <div className="relative bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-lg p-4 hover:shadow-md transition-shadow">
       <div className="flex items-start gap-3 pr-12">
         <span className="shrink-0 w-6 h-6 rounded-full bg-teal-500 text-white text-xs font-bold flex items-center justify-center mt-0.5">
           {index + 1}

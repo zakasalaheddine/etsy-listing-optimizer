@@ -29,9 +29,9 @@ export function generateRatedItem(
   config?: MockDataConfig,
 ): RatedItem {
   const defaultText =
-    text ||
-    `Mock item ${config?.seed || Math.floor(Math.random() * 1000)}`;
-  const defaultScore = score !== undefined ? score : 75 + Math.floor(Math.random() * 25);
+    text || `Mock item ${config?.seed || Math.floor(Math.random() * 1000)}`;
+  const defaultScore =
+    score !== undefined ? score : 75 + Math.floor(Math.random() * 25);
 
   return {
     text: defaultText,
@@ -171,9 +171,15 @@ export function generateOptimizationRecord(config?: MockDataConfig) {
  * Error generation helpers for testing error scenarios
  */
 export const mockErrors = {
-  networkError: () => new Error("Connection failed. Please check your internet connection and try again."),
+  networkError: () =>
+    new Error(
+      "Connection failed. Please check your internet connection and try again.",
+    ),
 
-  parseError: () => new Error("Couldn't fetch the listing. The page format might have changed. Please try again."),
+  parseError: () =>
+    new Error(
+      "Couldn't fetch the listing. The page format might have changed. Please try again.",
+    ),
 
   validationError: (message = "Invalid input") => new Error(message),
 
@@ -190,12 +196,18 @@ export const mockErrors = {
 
   aiServiceError: (type: "quota" | "network" | "parse" = "network") => {
     if (type === "quota") {
-      return new Error("Optimization failed due to high demand. Please try again in a few moments.");
+      return new Error(
+        "Optimization failed due to high demand. Please try again in a few moments.",
+      );
     }
     if (type === "parse") {
-      return new Error("Optimization failed. The AI returned an unexpected format. Please retry.");
+      return new Error(
+        "Optimization failed. The AI returned an unexpected format. Please retry.",
+      );
     }
-    return new Error("Optimization failed due to network issues. Please retry.");
+    return new Error(
+      "Optimization failed due to network issues. Please retry.",
+    );
   },
 
   databaseError: () => new Error("Database operation failed"),

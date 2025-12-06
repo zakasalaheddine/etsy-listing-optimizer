@@ -20,9 +20,7 @@ describe("validateEtsyUrl", () => {
     });
 
     it("should validate Etsy listing URL with subdomain", () => {
-      const result = validateEtsyUrl(
-        "https://shop.etsy.com/listing/456/item",
-      );
+      const result = validateEtsyUrl("https://shop.etsy.com/listing/456/item");
       expect(result.isValid).toBe(true);
       expect(result.error).toBeUndefined();
     });
@@ -152,9 +150,7 @@ describe("validateEtsyUrl", () => {
     });
 
     it("should reject Etsy search page", () => {
-      const result = validateEtsyUrl(
-        "https://www.etsy.com/search?q=handmade",
-      );
+      const result = validateEtsyUrl("https://www.etsy.com/search?q=handmade");
       expect(result.isValid).toBe(false);
       expect(result.error).toBe(
         "This doesn't appear to be an Etsy listing URL. Please provide a link to a specific product listing.",
@@ -162,9 +158,7 @@ describe("validateEtsyUrl", () => {
     });
 
     it("should reject Etsy category page", () => {
-      const result = validateEtsyUrl(
-        "https://www.etsy.com/c/jewelry",
-      );
+      const result = validateEtsyUrl("https://www.etsy.com/c/jewelry");
       expect(result.isValid).toBe(false);
       expect(result.error).toBe(
         "This doesn't appear to be an Etsy listing URL. Please provide a link to a specific product listing.",
@@ -249,7 +243,9 @@ describe("validateEtsyUrl", () => {
     });
 
     it("should reject data URI", () => {
-      const result = validateEtsyUrl("data:text/html,<script>alert('xss')</script>");
+      const result = validateEtsyUrl(
+        "data:text/html,<script>alert('xss')</script>",
+      );
       expect(result.isValid).toBe(false);
       expect(result.error).toBe(
         "This doesn't appear to be an Etsy URL. Please provide a valid Etsy listing link.",

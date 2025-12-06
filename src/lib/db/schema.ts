@@ -25,6 +25,7 @@ export const optimizations = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     email: text("email").notNull(),
+    listingUrl: text("listing_url"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => ({

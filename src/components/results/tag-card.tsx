@@ -36,7 +36,7 @@ export default function TagCard({ tag, isSelected, onToggle }: TagCardProps) {
       className={`relative rounded-lg p-4 flex items-start gap-3 cursor-pointer border-2 transition-all ${
         isSelected
           ? "bg-teal-50 dark:bg-teal-900/30 border-teal-500 dark:border-teal-600 shadow-md"
-          : "bg-slate-50 dark:bg-slate-750 border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 hover:shadow-sm"
+          : "bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 hover:shadow-sm"
       }`}
     >
       <input

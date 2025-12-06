@@ -5,6 +5,7 @@ import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type RateLimitError, useOptimize } from "@/hooks/use-optimize";
 import type { OptimizationResult } from "@/types";
+import AnalyticsDisplay from "./analytics-display";
 import BeforeAfter from "./landing/before-after";
 import HeroCTA from "./landing/hero-cta";
 import HowItWorks from "./landing/how-it-works";
@@ -293,7 +294,8 @@ export default function OptimizerTool() {
       {/* Footer */}
       <footer className="bg-slate-900 dark:bg-slate-950 text-slate-300 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm">
+          <AnalyticsDisplay />
+          <p className="text-sm mt-3">
             Built with AI by a{" "}
             <Link
               href="https://zakadev.com"
@@ -305,7 +307,8 @@ export default function OptimizerTool() {
             who runs an Etsy store
           </p>
           <p className="text-xs mt-2 text-slate-400">
-            Using the Who, What, Where, When, Why SEO Method with Google Gemini AI
+            Using the Who, What, Where, When, Why SEO Method with Google Gemini
+            AI
           </p>
         </div>
       </footer>

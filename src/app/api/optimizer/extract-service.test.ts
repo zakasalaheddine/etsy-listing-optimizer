@@ -1,13 +1,7 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { extractProductDetails } from "./extract-service";
-import {
-  createMockGoogleGenAI,
-  mockAIScenarios,
-} from "@/__mocks__/ai-service";
-import {
-  generateProductDetails,
-  mockErrors,
-} from "@/__mocks__/data-generator";
+import { createMockGoogleGenAI, mockAIScenarios } from "@/__mocks__/ai-service";
+import { generateProductDetails, mockErrors } from "@/__mocks__/data-generator";
 
 describe("extractProductDetails", () => {
   const testUrl = "https://www.etsy.com/listing/123456/test-product";
@@ -267,8 +261,7 @@ describe("extractProductDetails", () => {
     it("should extract from URL with hash", async () => {
       const mockData = generateProductDetails();
       const ai = mockAIScenarios.successfulExtraction(mockData);
-      const urlWithHash =
-        "https://www.etsy.com/listing/123456/product#reviews";
+      const urlWithHash = "https://www.etsy.com/listing/123456/product#reviews";
 
       const result = await extractProductDetails(urlWithHash, ai);
 
@@ -278,8 +271,7 @@ describe("extractProductDetails", () => {
     it("should extract from different Etsy subdomains", async () => {
       const mockData = generateProductDetails();
       const ai = mockAIScenarios.successfulExtraction(mockData);
-      const urlWithSubdomain =
-        "https://shop.etsy.com/listing/123456/product";
+      const urlWithSubdomain = "https://shop.etsy.com/listing/123456/product";
 
       const result = await extractProductDetails(urlWithSubdomain, ai);
 

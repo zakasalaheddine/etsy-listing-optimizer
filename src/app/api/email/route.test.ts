@@ -7,18 +7,22 @@ vi.mock("@/lib/db", () => {
       insert: vi.fn().mockImplementation((_table) => {
         // Ignore the table parameter to avoid circular reference issues
         return {
-          values: vi.fn().mockImplementation((insertedValues: { name: string; email: string }) => {
-            return {
-              returning: vi.fn().mockResolvedValue([
-                {
-                  id: "test-id",
-                  name: insertedValues.name,
-                  email: insertedValues.email,
-                  createdAt: new Date(),
-                },
-              ]),
-            };
-          }),
+          values: vi
+            .fn()
+            .mockImplementation(
+              (insertedValues: { name: string; email: string }) => {
+                return {
+                  returning: vi.fn().mockResolvedValue([
+                    {
+                      id: "test-id",
+                      name: insertedValues.name,
+                      email: insertedValues.email,
+                      createdAt: new Date(),
+                    },
+                  ]),
+                };
+              },
+            ),
         };
       }),
     },
@@ -29,7 +33,6 @@ vi.mock("@/lib/db", () => {
 const { POST } = await import("./route");
 
 describe("POST /api/email", () => {
-
   describe("successful email storage", () => {
     it("should store valid email and name", async () => {
       const request = new Request("http://localhost/api/email", {

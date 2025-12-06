@@ -123,7 +123,7 @@ export async function POST(request: Request) {
     }
 
     // Record this optimization
-    await db.insert(optimizations).values({ email });
+    await db.insert(optimizations).values({ email, listingUrl: url });
 
     // Return result with rate limit info
     return Response.json(

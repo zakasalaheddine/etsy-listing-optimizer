@@ -1,6 +1,6 @@
 /**
  * Mock Data Generator for E2E Tests
- * 
+ *
  * This module provides utilities to generate mock API responses for testing
  * without touching the actual database. All data is generated programmatically.
  */
@@ -178,18 +178,15 @@ export function generateMockOptimizationResult(
     ...keywords.when,
     ...keywords.why,
   ];
-  const tags = Array.from(
-    { length: Math.min(tagCount, 30) },
-    (_, i) => {
-      const keyword = allKeywords[i % allKeywords.length];
-      const text = keyword.length > 20 ? keyword.substring(0, 20) : keyword;
-      const score = baseTagScore - i;
-      return {
-        text,
-        score: Math.max(0, score),
-      };
-    },
-  );
+  const tags = Array.from({ length: Math.min(tagCount, 30) }, (_, i) => {
+    const keyword = allKeywords[i % allKeywords.length];
+    const text = keyword.length > 20 ? keyword.substring(0, 20) : keyword;
+    const score = baseTagScore - i;
+    return {
+      text,
+      score: Math.max(0, score),
+    };
+  });
 
   return {
     productType,
@@ -326,4 +323,3 @@ export const EdgeCaseGenerators = {
       remainingOptimizations: -1,
     }),
 };
-
