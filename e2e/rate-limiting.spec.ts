@@ -1,4 +1,4 @@
-import { test, expect, TEST_USER, VALID_ETSY_URL } from "./fixtures";
+import { expect, TEST_USER, test, VALID_ETSY_URL } from "./fixtures";
 import {
   generateMockErrorResponse,
   generateMockOptimizationResult,

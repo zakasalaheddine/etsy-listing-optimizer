@@ -1,7 +1,7 @@
-import { describe, expect, it, beforeEach } from "vitest";
-import { extractProductDetails } from "./extract-service";
+import { describe, expect, it } from "vitest";
 import { createMockGoogleGenAI, mockAIScenarios } from "@/__mocks__/ai-service";
-import { generateProductDetails, mockErrors } from "@/__mocks__/data-generator";
+import { generateProductDetails } from "@/__mocks__/data-generator";
+import { extractProductDetails } from "./extract-service";
 
 describe("extractProductDetails", () => {
   const testUrl = "https://www.etsy.com/listing/123456/test-product";

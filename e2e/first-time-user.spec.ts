@@ -1,8 +1,5 @@
-import { test, expect, TEST_USER, VALID_ETSY_URL } from "./fixtures";
-import {
-  generateMockEmailResponse,
-  generateMockOptimizationResult,
-} from "./mock-data";
+import { expect, TEST_USER, test, VALID_ETSY_URL } from "./fixtures";
+import { generateMockEmailResponse } from "./mock-data";
 
 test.describe("First-time user flow", () => {
   test.beforeEach(async ({ page, cleanupEmail }) => {

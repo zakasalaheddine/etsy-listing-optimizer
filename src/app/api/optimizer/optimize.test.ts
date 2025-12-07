@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { generateOptimizedListing } from "./optimize";
 import { createMockGoogleGenAI, mockAIScenarios } from "@/__mocks__/ai-service";
 import { generateOptimizationResult } from "@/__mocks__/data-generator";
+import { generateOptimizedListing } from "./optimize";
 
 describe("generateOptimizedListing", () => {
   const testDescription =

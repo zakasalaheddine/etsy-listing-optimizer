@@ -1,4 +1,4 @@
-import { test, expect, TEST_USER, VALID_ETSY_URL } from "./fixtures";
+import { expect, TEST_USER, test, VALID_ETSY_URL } from "./fixtures";
 import {
   generateMockErrorResponse,
   generateMockOptimizationResult,
@@ -245,7 +245,7 @@ test.describe("Error handling scenarios", () => {
 
   test("should handle timeout scenarios", async ({ page }) => {
     // Mock very slow response
-    await page.route("**/api/optimizer", async (route) => {
+    await page.route("**/api/optimizer", async (_route) => {
       // Don't fulfill the request, simulating timeout
       await new Promise(() => {}); // Never resolves
     });

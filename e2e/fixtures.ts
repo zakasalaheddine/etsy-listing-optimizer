@@ -9,6 +9,7 @@ type TestFixtures = {
 
 export const test = base.extend<TestFixtures>({
   // Cleanup specific email from all tables (no-op - we use mocks)
+  // biome-ignore lint/correctness/noEmptyPattern: Intentional empty pattern for no-op fixture
   cleanupEmail: async ({}, use) => {
     const cleanup = async (_email: string) => {
       // No-op: All tests use mocked API responses, no database needed
@@ -17,6 +18,7 @@ export const test = base.extend<TestFixtures>({
   },
 
   // Add optimization records for testing rate limiting (no-op - we use mocks)
+  // biome-ignore lint/correctness/noEmptyPattern: Intentional empty pattern for no-op fixture
   addOptimizations: async ({}, use) => {
     const addOpts = async (_email: string, _count: number) => {
       // No-op: Rate limiting tests should mock API responses directly
@@ -25,6 +27,7 @@ export const test = base.extend<TestFixtures>({
   },
 
   // Reset entire database (no-op - we use mocks)
+  // biome-ignore lint/correctness/noEmptyPattern: Intentional empty pattern for no-op fixture
   resetDatabase: async ({}, use) => {
     const reset = async () => {
       // No-op: All tests use mocked API responses, no database needed

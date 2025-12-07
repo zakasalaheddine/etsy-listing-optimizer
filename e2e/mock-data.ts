@@ -153,7 +153,7 @@ export function generateMockOptimizationResult(
       .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
       .join(" ");
     return {
-      text: text.length > 140 ? text.substring(0, 137) + "..." : text,
+      text: text.length > 140 ? `${text.substring(0, 137)}...` : text,
       score: Math.max(0, score),
     };
   });

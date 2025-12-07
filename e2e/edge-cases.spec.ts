@@ -1,4 +1,4 @@
-import { test, expect, TEST_USER, VALID_ETSY_URL } from "./fixtures";
+import { expect, TEST_USER, test, VALID_ETSY_URL } from "./fixtures";
 import {
   EdgeCaseGenerators,
   generateMockOptimizationResult,
@@ -278,7 +278,7 @@ test.describe("Edge cases and boundary conditions", () => {
         for (let i = 0; i < 5; i++) {
           localStorage.setItem(`dummy-${i}`, bigString);
         }
-      } catch (e) {
+      } catch (_e) {
         // Quota exceeded - expected
       }
     });
@@ -461,7 +461,7 @@ test.describe("Edge cases and boundary conditions", () => {
   }) => {
     // Disable clipboard API
     await page.addInitScript(() => {
-      // @ts-ignore
+      // @ts-expect-error
       delete navigator.clipboard;
     });
 

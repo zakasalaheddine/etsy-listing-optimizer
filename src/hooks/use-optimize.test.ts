@@ -1,9 +1,9 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useOptimize } from "./use-optimize";
-import { generateOptimizationResult } from "@/__mocks__/data-generator";
+import { renderHook, waitFor } from "@testing-library/react";
 import React, { type ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { generateOptimizationResult } from "@/__mocks__/data-generator";
+import { useOptimize } from "./use-optimize";
 
 // Mock fetch globally
 global.fetch = vi.fn();

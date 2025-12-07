@@ -1,5 +1,4 @@
 import { vi } from "vitest";
-import type { SQL } from "drizzle-orm";
 
 /**
  * Mock database state for testing
@@ -116,6 +115,7 @@ export function createMockDb(options?: {
   const mockInsert = vi.fn((table: unknown) => {
     // Determine which table is being inserted into
     // Use a safe property check instead of JSON.stringify to avoid circular reference errors
+    // Note: Using 'any' is necessary here to access drizzle-orm table internal properties for mocking
     const tableName = String(
       (table as any)?._?.name || (table as any)?.name || "",
     );
@@ -207,6 +207,7 @@ export function createCustomMockDb(config: {
 }) {
   const mockInsert = vi.fn((table: unknown) => {
     // Use a safe property check instead of JSON.stringify to avoid circular reference errors
+    // Note: Using 'any' is necessary here to access drizzle-orm table internal properties for mocking
     const tableName = String(
       (table as any)?._?.name || (table as any)?.name || "",
     );

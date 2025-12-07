@@ -1,10 +1,10 @@
-import { vi } from "vitest";
 import type { GoogleGenAI } from "@google/genai";
+import { vi } from "vitest";
+import type { OptimizationResult, ProductDetails } from "@/types";
 import {
   generateOptimizationResult,
   generateProductDetails,
 } from "./data-generator";
-import type { OptimizationResult, ProductDetails } from "@/types";
 
 /**
  * Configuration for mock AI responses
