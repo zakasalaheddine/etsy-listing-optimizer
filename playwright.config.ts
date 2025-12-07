@@ -9,6 +9,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
+  maxFailures: 1, // Stop after first failure
   reporter: process.env.CI ? [["html"], ["github"]] : [["html"], ["list"]],
   globalSetup: "./e2e/global-setup.ts",
   use: {
