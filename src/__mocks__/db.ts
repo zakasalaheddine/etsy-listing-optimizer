@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: DB mock */
 import { vi } from "vitest";
 
 /**

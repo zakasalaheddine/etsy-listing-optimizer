@@ -28,6 +28,9 @@ export default function OptimizerForm({
   const [error, setError] = useState<string | null>(null);
 
   const hasUserInfo = name && email;
+  const canSubmitUserInfo =
+    localName.trim() && localEmail.trim() && !hasUserInfo;
+  const canSubmitOptimization = hasUserInfo && url.trim();
 
   const handleUserInfoSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -151,7 +154,12 @@ export default function OptimizerForm({
             />
             <button
               type="submit"
-              disabled={isSubmittingInfo || isLoading}
+              disabled={
+                isSubmittingInfo ||
+                isLoading ||
+                ((!hasUserInfo && !canSubmitUserInfo) as boolean) ||
+                ((hasUserInfo && !canSubmitOptimization) as boolean)
+              }
               className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-transparent text-base font-semibold rounded-lg shadow-lg text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:bg-slate-400 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-all transform hover:scale-105 active:scale-95"
             >
               {isSubmittingInfo ? (

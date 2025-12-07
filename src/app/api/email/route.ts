@@ -18,10 +18,18 @@ export async function POST(request: Request) {
     }
 
     // Store email and name in database
-    const [insertedEmail] = await db
+    const result = await db
       .insert(emails)
       .values({ name: name.trim(), email })
       .returning();
+
+    const insertedEmail = result[0];
+    if (!insertedEmail) {
+      return NextResponse.json(
+        { error: "Failed to store email" },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json(
       {

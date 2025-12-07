@@ -132,6 +132,7 @@ test.describe("Rate limiting scenarios", () => {
         status: 200,
         contentType: "application/json",
         body: JSON.stringify({
+          productType: "Test Product",
           keywords: {
             anchor: ["test"],
             descriptive: ["test"],
@@ -142,8 +143,12 @@ test.describe("Rate limiting scenarios", () => {
             why: [],
           },
           titles: [{ text: "Test", score: 90 }],
+          descriptions: [{ text: "Test description", score: 90 }],
           tags: [{ text: "test", score: 90 }],
-          remainingOptimizations: remainingCount,
+          rateLimit: {
+            remaining: remainingCount,
+            maxPerDay: 5,
+          },
         }),
       });
     });
@@ -153,14 +158,21 @@ test.describe("Rate limiting scenarios", () => {
       .getByPlaceholder(/https:\/\/www\.etsy\.com\/listing/i)
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
-    await expect(page.getByText(/4.*remaining/i)).toBeVisible();
+    await expect(page.getByText(/4.*remaining/i)).toBeVisible({
+      timeout: 10000,
+    });
 
-    // Second optimization
+    // Wait for URL to be cleared
+    await page.waitForTimeout(500);
+
+    // Second optimization - URL should be cleared, so fill it again
     await page
-      .getByPlaceholder(/paste your etsy listing url/i)
+      .getByPlaceholder(/https:\/\/www\.etsy\.com\/listing/i)
       .fill(VALID_ETSY_URL.replace("1234567890", "9876543210"));
-    await page.getByRole("button", { name: /optimize listing/i }).click();
-    await expect(page.getByText(/3.*remaining/i)).toBeVisible();
+    await page.getByRole("button", { name: /Optimize Now/i }).click();
+    await expect(page.getByText(/3.*remaining/i)).toBeVisible({
+      timeout: 10000,
+    });
   });
 
   test("should reset count on next day", async ({ page }) => {
@@ -286,11 +298,14 @@ test.describe("Rate limiting scenarios", () => {
       .getByPlaceholder(/https:\/\/www\.etsy\.com\/listing/i)
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
-    await expect(page.getByText(/0.*remaining/i)).toBeVisible({
+    // When remaining is 0, it shows "Daily Limit Reached" instead of "0 remaining"
+    await expect(
+      page.getByText(/0.*remaining|daily limit reached/i).first(),
+    ).toBeVisible({
       timeout: 10000,
     });
 
-    // Second optimization - should fail
+    // Second optimization - should fail (URL should be cleared, so fill it again)
     await page
       .getByPlaceholder(/https:\/\/www\.etsy\.com\/listing/i)
       .fill(VALID_ETSY_URL.replace("1234567890", "9876543210"));

@@ -105,6 +105,8 @@ export default function OptimizerTool() {
             if (result.rateLimit) {
               setRateLimitInfo(result.rateLimit);
             }
+            // Clear URL input after successful optimization
+            setUrl("");
           }
         })
         .catch((err) => {
@@ -161,6 +163,8 @@ export default function OptimizerTool() {
         if (optimizationResult.rateLimit) {
           setRateLimitInfo(optimizationResult.rateLimit);
         }
+        // Clear URL input after successful optimization
+        setUrl("");
       } catch (err) {
         console.error(err);
         // Clear timers on error

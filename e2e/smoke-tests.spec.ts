@@ -160,15 +160,17 @@ test.describe("Smoke Tests - Critical Flows", () => {
       timeout: 10000,
     });
 
-    // Verify keywords are visible
+    // Verify keywords are visible (use first() to avoid strict mode violations)
     if (mockResult.keywords.anchor.length > 0) {
       await expect(
-        page.getByText(mockResult.keywords.anchor[0], { exact: false }),
+        page.getByText(mockResult.keywords.anchor[0], { exact: false }).first(),
       ).toBeVisible();
     }
     if (mockResult.keywords.descriptive.length > 0) {
       await expect(
-        page.getByText(mockResult.keywords.descriptive[0], { exact: false }),
+        page
+          .getByText(mockResult.keywords.descriptive[0], { exact: false })
+          .first(),
       ).toBeVisible();
     }
 
@@ -213,8 +215,10 @@ test.describe("Smoke Tests - Critical Flows", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // Should show error message
-    await expect(page.getByText(/daily limit|limit reached/i)).toBeVisible({
+    // Should show error message (use first() to avoid strict mode violations)
+    await expect(
+      page.getByText(/daily limit|limit reached/i).first(),
+    ).toBeVisible({
       timeout: 5000,
     });
   });
@@ -251,7 +255,7 @@ test.describe("Smoke Tests - Critical Flows", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // Should show error message
+    // Should show error message (use first() to avoid strict mode violations)
     await expect(page.getByText(/error|wrong|try again/i).first()).toBeVisible({
       timeout: 5000,
     });

@@ -8,7 +8,9 @@ export async function GET() {
       .select({ count: sql<number>`count(*)` })
       .from(optimizations);
 
-    const totalCount = Number(totalOptimizations[0]?.count || 0);
+    const totalCount = Number(
+      (totalOptimizations[0] as { count?: number })?.count || 0,
+    );
 
     return Response.json(
       {

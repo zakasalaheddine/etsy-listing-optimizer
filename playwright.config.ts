@@ -48,5 +48,12 @@ export default defineConfig({
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
+    env: {
+      // Use mock database - no DATABASE_URL needed
+      PLAYWRIGHT_TEST: "true",
+      GEMINI_API_KEY: process.env.GEMINI_API_KEY || "test_key_placeholder",
+      MAX_OPTIMIZATIONS_PER_DAY: process.env.MAX_OPTIMIZATIONS_PER_DAY || "5",
+      CONTACT_EMAIL: process.env.CONTACT_EMAIL || "test@example.com",
+    },
   },
 });

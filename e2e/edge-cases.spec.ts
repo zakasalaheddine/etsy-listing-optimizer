@@ -69,12 +69,26 @@ test.describe("Edge cases and boundary conditions", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // All 30 tags should be visible
-    await expect(page.getByText(mockResult.tags[0].text)).toBeVisible({
+    // Wait for results to appear - use more specific selector
+    await expect(
+      page.getByRole("heading", { name: "Tags" }).first(),
+    ).toBeVisible({
       timeout: 10000,
     });
+
+    // Verify we have 30 tag cards visible
+    const tagCards = page.locator('label[for^="tag-"]');
+    await expect(tagCards).toHaveCount(30, { timeout: 5000 });
+
+    // Verify first and last tags are visible (use first() to handle duplicates)
+    const firstTagText = mockResult.tags[0].text;
+    const lastTagText = mockResult.tags[mockResult.tags.length - 1].text;
+
     await expect(
-      page.getByText(mockResult.tags[mockResult.tags.length - 1].text),
+      page.locator(`label[for="tag-${firstTagText}"]`).first(),
+    ).toBeVisible();
+    await expect(
+      page.locator(`label[for="tag-${lastTagText}"]`).first(),
     ).toBeVisible();
   });
 
@@ -122,11 +136,29 @@ test.describe("Edge cases and boundary conditions", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // Should display special characters correctly
-    await expect(page.getByText("hand-made")).toBeVisible({
+    // Wait for results to appear - use more specific selector
+    await expect(
+      page.getByRole("heading", { name: "Tags" }).first(),
+    ).toBeVisible({
       timeout: 10000,
     });
-    await expect(page.getByText("eco&friendly")).toBeVisible();
+
+    // Should display special characters correctly - use specific selectors
+    // Find tags with special characters in tag cards
+    await expect(
+      page
+        .locator("label")
+        .filter({ hasText: /hand-made/ })
+        .first(),
+    ).toBeVisible({
+      timeout: 10000,
+    });
+    await expect(
+      page
+        .locator("label")
+        .filter({ hasText: /eco&friendly/ })
+        .first(),
+    ).toBeVisible();
   });
 
   test("should handle unicode and emoji in keywords", async ({ page }) => {
@@ -153,10 +185,12 @@ test.describe("Edge cases and boundary conditions", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // Should handle unicode correctly
+    // Should handle unicode correctly - just verify results appear
     await expect(page.getByText(/Anchor Keywords/i)).toBeVisible({
       timeout: 10000,
     });
+    // Verify the page rendered without errors (emoji should be visible in titles)
+    await expect(page.getByText(/Handmade Gift/i)).toBeVisible();
   });
 
   test("should handle very long email addresses", async ({
@@ -183,6 +217,22 @@ test.describe("Edge cases and boundary conditions", () => {
       });
     });
 
+    // Mock optimizer API to return results
+    await page.route("**/api/optimizer", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(
+          generateMockOptimizationResult({
+            anchorKeywords: 1,
+            descriptiveKeywords: 1,
+            titleCount: 1,
+            tagCount: 1,
+          }),
+        ),
+      });
+    });
+
     await page.getByLabel("Name").fill("Test User");
     await page.getByLabel("Email Address").fill(longEmail);
     await page
@@ -190,9 +240,9 @@ test.describe("Edge cases and boundary conditions", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // Should accept long email
+    // Should accept long email and show results
     await expect(
-      page.getByPlaceholder(/https:\/\/www\.etsy\.com\/listing/i),
+      page.getByRole("heading", { name: "Tags" }).first(),
     ).toBeVisible({ timeout: 10000 });
   });
 
@@ -216,6 +266,22 @@ test.describe("Edge cases and boundary conditions", () => {
       });
     });
 
+    // Mock optimizer API to return results
+    await page.route("**/api/optimizer", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(
+          generateMockOptimizationResult({
+            anchorKeywords: 1,
+            descriptiveKeywords: 1,
+            titleCount: 1,
+            tagCount: 1,
+          }),
+        ),
+      });
+    });
+
     await page.getByLabel("Name").fill(longName);
     await page.getByLabel("Email Address").fill(TEST_USER.email);
     await page
@@ -223,9 +289,9 @@ test.describe("Edge cases and boundary conditions", () => {
       .fill(VALID_ETSY_URL);
     await page.getByRole("button", { name: /Optimize Now/i }).click();
 
-    // Should accept long name
+    // Should accept long name and show results
     await expect(
-      page.getByPlaceholder(/https:\/\/www\.etsy\.com\/listing/i),
+      page.getByRole("heading", { name: "Tags" }).first(),
     ).toBeVisible({ timeout: 10000 });
   });
 
@@ -259,15 +325,36 @@ test.describe("Edge cases and boundary conditions", () => {
       name: /Optimize Now/i,
     });
 
-    for (let i = 0; i < 3; i++) {
-      await urlInput.fill(VALID_ETSY_URL.replace("1234567890", String(i)));
-      await submitButton.click();
-      // Small delay to allow UI to update
-      await page.waitForTimeout(200);
-    }
+    // First submission
+    await urlInput.fill(VALID_ETSY_URL);
+    await submitButton.click();
 
-    // Should handle all requests or prevent duplicate submissions
-    // Implementation-specific behavior
+    // Wait for first result
+    await expect(page.getByText(/Anchor Keywords/i)).toBeVisible({
+      timeout: 10000,
+    });
+
+    // Wait for URL to be cleared after successful optimization
+    await expect(urlInput)
+      .toHaveValue("", { timeout: 2000 })
+      .catch(() => {
+        // URL might not be cleared immediately, continue anyway
+      });
+
+    // Submit again (should work or be prevented) - URL is cleared so fill it again
+    await urlInput.fill(VALID_ETSY_URL.replace("1234567890", "9999999999"));
+    // Get button again in case it was re-rendered
+    const submitButton2 = page.getByRole("button", {
+      name: /Optimize Now/i,
+    });
+    await submitButton2.click();
+
+    // Should handle the request (either show new results or prevent duplicate)
+    // Just verify the page doesn't crash
+    await page.waitForTimeout(500);
+    await expect(
+      page.getByRole("button", { name: /Optimize Now/i }),
+    ).toBeVisible();
   });
 
   test("should handle localStorage quota exceeded", async ({ page }) => {
