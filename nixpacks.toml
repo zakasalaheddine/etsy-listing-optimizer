@@ -1,12 +1,18 @@
 [phases.setup]
 nixPkgs = ["nodejs_22"]
+cmds = [
+  "curl -fsSL https://bun.sh/install | bash",
+  "export PATH=\"$HOME/.bun/bin:$PATH\"",
+  "sudo cp $HOME/.bun/bin/bun /usr/local/bin/bun 2>/dev/null || cp $HOME/.bun/bin/bun /usr/local/bin/bun",
+  "chmod +x /usr/local/bin/bun"
+]
 
 [phases.install]
-cmds = ["npm install"]
+cmds = ["bun install"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["bun run build"]
 
 [start]
-cmd = "npm run start"
+cmd = "export PATH=\"$HOME/.bun/bin:$PATH\" && bun run start"
 
