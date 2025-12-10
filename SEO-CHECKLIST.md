@@ -6,14 +6,15 @@
 
 - [ ] **Update Production Domain**
   - Edit `metadata.json` and change `siteUrl` to your production domain
-  - Example: `"siteUrl": "https://etsylistingoptimizer.com"`
+  - Example: `"siteUrl": "https://venteso.com"`
 
-- [ ] **Create Icon Files** (Missing - Currently returning 404)
-  - [ ] `/public/favicon.ico` - Legacy favicon
-  - [ ] `/public/icon.svg` - Scalable SVG icon
-  - [ ] `/public/icon-192.png` - PWA icon (192x192px)
-  - [ ] `/public/icon-512.png` - PWA icon (512x512px)
-  - [ ] `/public/apple-icon.png` - Apple touch icon (180x180px)
+- [x] **Icon Files** (Located in `/public/favicon/`)
+  - [x] `/public/favicon/favicon.ico` - Legacy favicon
+  - [x] `/public/favicon/favicon.svg` - Scalable SVG icon
+  - [x] `/public/favicon/favicon-96x96.png` - 96x96 favicon
+  - [x] `/public/favicon/web-app-manifest-192x192.png` - PWA icon (192x192px)
+  - [x] `/public/favicon/web-app-manifest-512x512.png` - PWA icon (512x512px)
+  - [x] `/public/favicon/apple-touch-icon.png` - Apple touch icon (180x180px)
   - [ ] `/public/og-image.png` - OpenGraph fallback image (1200x630px)
   - [ ] `/public/twitter-image.png` - Twitter card image (1200x630px)
 

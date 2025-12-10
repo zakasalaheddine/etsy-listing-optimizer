@@ -120,14 +120,15 @@ Four comprehensive structured data types:
 
 ### ✅ 7. Favicon & Icons
 
-**Location**: `metadata.json` → `public/`
+**Location**: `metadata.json` → `public/favicon/`
 
-Required icons (need to be created):
-- `/favicon.ico`: Legacy favicon
-- `/icon.svg`: Scalable SVG icon
-- `/icon-192.png`: PWA icon (192x192)
-- `/icon-512.png`: PWA icon (512x512)
-- `/apple-icon.png`: Apple touch icon (180x180)
+Icons are located in `/public/favicon/`:
+- `/favicon/favicon.ico`: Legacy favicon
+- `/favicon/favicon.svg`: Scalable SVG icon
+- `/favicon/favicon-96x96.png`: 96x96 favicon
+- `/favicon/web-app-manifest-192x192.png`: PWA icon (192x192)
+- `/favicon/web-app-manifest-512x512.png`: PWA icon (512x512)
+- `/favicon/apple-touch-icon.png`: Apple touch icon (180x180)
 - `/og-image.png`: OpenGraph fallback (1200x630)
 - `/twitter-image.png`: Twitter card image (1200x630)
 

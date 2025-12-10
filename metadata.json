@@ -1,6 +1,6 @@
 {
   "siteName": "Etsy Listing Optimizer",
-  "siteUrl": "https://etsylistingoptimizer.com",
+  "siteUrl": "https://venteso.com",
   "title": {
     "default": "Etsy Listing Optimizer - AI-Powered SEO Tool for Etsy Sellers",
     "template": "%s | Etsy Listing Optimizer"
@@ -47,7 +47,7 @@
   "openGraph": {
     "type": "website",
     "locale": "en_US",
-    "url": "https://etsylistingoptimizer.com",
+    "url": "https://venteso.com",
     "siteName": "Etsy Listing Optimizer",
     "title": "Etsy Listing Optimizer - AI-Powered SEO Tool for Etsy Sellers",
     "description": "Free AI-powered Etsy listing optimizer using the Who, What, Where, When, Why SEO Method. Generate optimized titles, tags, and keywords to boost your Etsy shop visibility and sales.",
@@ -69,17 +69,18 @@
     "images": ["/twitter-image.png"]
   },
   "alternates": {
-    "canonical": "https://etsylistingoptimizer.com"
+    "canonical": "https://venteso.com"
   },
   "icons": {
     "icon": [
-      { "url": "/favicon.ico", "sizes": "any" },
-      { "url": "/icon.svg", "type": "image/svg+xml" },
-      { "url": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-      { "url": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+      { "url": "/favicon/favicon.ico", "sizes": "any" },
+      { "url": "/favicon/favicon.svg", "type": "image/svg+xml" },
+      { "url": "/favicon/favicon-96x96.png", "sizes": "96x96", "type": "image/png" },
+      { "url": "/favicon/web-app-manifest-192x192.png", "sizes": "192x192", "type": "image/png" },
+      { "url": "/favicon/web-app-manifest-512x512.png", "sizes": "512x512", "type": "image/png" }
     ],
     "apple": [
-      { "url": "/apple-icon.png", "sizes": "180x180", "type": "image/png" }
+      { "url": "/favicon/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
     ]
   },
   "manifest": "/manifest.json",
