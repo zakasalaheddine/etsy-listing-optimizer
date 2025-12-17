@@ -14,6 +14,12 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
+  if (!process.env.FIRECRAWL_API_KEY) {
+    return Response.json(
+      { error: "FIRECRAWL_API_KEY is not set" },
+      { status: 500 },
+    );
+  }
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   // Get rate limit configuration from environment variables
@@ -83,7 +89,7 @@ export async function POST(request: Request) {
 
     let details: ProductDetails;
     try {
-      details = await extractProductDetails(url, ai);
+      details = await extractProductDetails(url, process.env.FIRECRAWL_API_KEY);
       if (!details || !details.description || !details.title) {
         return Response.json(
           {

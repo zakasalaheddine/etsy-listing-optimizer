@@ -73,23 +73,3 @@ Goal: Maximize character space (20 characters per tag).
 Strategy: Combine words from the Five W's lists (and any unused Anchor/Descriptive keywords) to cram as many relevant terms as possible into each tag. Tags do not need to make grammatical sense.
 Scoring: For each tag, provide a score from 1 to 100, where 100 is the best, based on keyword relevance and character space maximization.
 `;
-
-export const EXTRACT_SYSTEM_PROMPT = (url: string) => `
-You are a web scraper and product analyst. Based on the content at this URL: ${url}, extract the following information:
-
-1. Product Title (CRITICAL):
-   - Extract the COMPLETE and FULL product title exactly as it appears on the page
-   - Do NOT truncate, summarize, or shorten the title in any way
-   - Include ALL words, characters, and punctuation from the original title
-   - If the title appears in multiple places, use the primary/main title element
-   - Preserve the exact capitalization and formatting
-
-2. Detailed Description:
-   - Extract a comprehensive description of the product
-   - Focus on its function, material, size, customization options (if any), and intended audience/occasion
-   - Include all relevant product details and specifications
-
-3. Tags:
-   - Extract all tags/keywords that are associated with the product listing
-   - Include all tags exactly as they appear, without modification
-`;
